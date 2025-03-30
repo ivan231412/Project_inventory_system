@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <!-- Навигационное меню -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Inventory System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#suppliers">Suppliers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#raw-materials">Raw Materials</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#orders">Production Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#movements">Stock Movements</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#auditlog">Audit Log</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#reports">Reports</a></li>
+                </ul>
+                <button class="btn btn-outline-light ms-auto" id="theme-toggle">
+                    <i class="fas fa-sun"></i> Toggle Theme
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Контейнер для уведомлений -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toast-container"></div>
+
+    <div class="container mt-5 pt-5">
+        <!-- Dashboard -->
+        <section id="dashboard" class="mb-5" data-aos="fade-up">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-tachometer-alt me-2"></i>
+                    <h2 class="card-title mb-0">Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    <h3>Low Stock Alerts</h3>
+                    <div id="low-stock-alerts"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Поставщики -->
+        <section id="suppliers" class="mb-5" data-aos="fade-up" data-aos-delay="100">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-users me-2"></i>
+                    <h2 class="card-title mb-0">Suppliers</h2>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
+                        <i class="fas fa-plus"></i> Add Supplier
+                    </button>
+                    <table id="supplier-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact Person</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Модальное окно для добавления поставщика -->
+        <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addSupplierModalLabel">Add Supplier</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-supplier-form">
+                            <div class="mb-3">
+                                <label for="supplier-name" class="form-label">Name
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier's company name, e.g., 'ABC Supplies'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="supplier-name" placeholder="e.g., ABC Supplies" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="supplier-contact" class="form-label">Contact Person
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the name of the contact person, e.g., 'John Doe'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="supplier-contact" placeholder="e.g., John Doe" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="supplier-phone" class="form-label">Phone
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the phone number, e.g., '+1234567890'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="supplier-phone" placeholder="e.g., +1234567890" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="supplier-email" class="form-label">Email
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the email address, e.g., 'contact@abcsupplies.com'"></i>
+                                </label>
+                                <input type="email" class="form-control" id="supplier-email" placeholder="e.g., contact@abcsupplies.com" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="supplier-address" class="form-label">Address
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier's address, e.g., '123 Main St, City'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="supplier-address" placeholder="e.g., 123 Main St, City" required>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="supplier">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Add Supplier</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для редактирования поставщика -->
+        <div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editSupplierModalLabel">Edit Supplier</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-supplier-form">
+                            <input type="hidden" id="edit-supplier-id">
+                            <div class="mb-3">
+                                <label for="edit-supplier-name" class="form-label">Name
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier's company name, e.g., 'ABC Supplies'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="edit-supplier-name" placeholder="e.g., ABC Supplies" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-supplier-contact" class="form-label">Contact Person
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the name of the contact person, e.g., 'John Doe'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="edit-supplier-contact" placeholder="e.g., John Doe" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-supplier-phone" class="form-label">Phone
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the phone number, e.g., '+1234567890'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="edit-supplier-phone" placeholder="e.g., +1234567890" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-supplier-email" class="form-label">Email
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the email address, e.g., 'contact@abcsupplies.com'"></i>
+                                </label>
+                                <input type="email" class="form-control" id="edit-supplier-email" placeholder="e.g., contact@abcsupplies.com" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-supplier-address" class="form-label">Address
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier's address, e.g., '123 Main St, City'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="edit-supplier-address" placeholder="e.g., 123 Main St, City" required>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="supplier">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Сырьё -->
+        <section id="raw-materials" class="mb-5" data-aos="fade-up" data-aos-delay="200">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-boxes me-2"></i>
+                    <h2 class="card-title mb-0">Raw Materials</h2>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addRawMaterialModal">
+                        <i class="fas fa-plus"></i> Add Raw Material
+                    </button>
+                    <table id="rawmaterial-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Material ID</th>
+                                <th>Name</th>
+                                <th>Supplier</th>
+                                <th>Stock Quantity</th>
+                                <th>Minimum Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Модальное окно для добавления сырья -->
+        <div class="modal fade" id="addRawMaterialModal" tabindex="-1" aria-labelledby="addRawMaterialModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addRawMaterialModalLabel">Add Raw Material</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-rawmaterial-form">
+                            <div class="mb-3">
+                                <label for="rawmaterial-id" class="form-label">Material ID
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unique identifier for the material, e.g., 'MAT001'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="rawmaterial-id" placeholder="e.g., MAT001" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rawmaterial-name" class="form-label">Name
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the material, e.g., 'Steel Rod'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="rawmaterial-name" placeholder="e.g., Steel Rod" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rawmaterial-description" class="form-label">Description
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Optional description, e.g., 'High-grade steel for construction'"></i>
+                                </label>
+                                <textarea class="form-control" id="rawmaterial-description" placeholder="e.g., High-grade steel for construction"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rawmaterial-unit" class="form-label">Unit
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unit of measurement, e.g., 'kg' or 'meters'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="rawmaterial-unit" placeholder="e.g., kg" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rawmaterial-supplier" class="form-label">Supplier
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the supplier from the list"></i>
+                                </label>
+                                <select class="form-select" id="rawmaterial-supplier" required>
+                                    <option value="">Select Supplier</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rawmaterial-price" class="form-label">Price per Unit
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Price per unit, e.g., '10.50'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="rawmaterial-price" step="0.01" placeholder="e.g., 10.50" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rawmaterial-stock" class="form-label">Stock Quantity
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Current stock quantity, e.g., '100'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="rawmaterial-stock" step="0.01" placeholder="e.g., 100" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rawmaterial-minimum-stock" class="form-label">Minimum Stock
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Minimum stock level for alerts, e.g., '20'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="rawmaterial-minimum-stock" step="0.01" placeholder="e.g., 20" required>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="rawmaterial">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Add Raw Material</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для редактирования сырья -->
+        <div class="modal fade" id="editRawMaterialModal" tabindex="-1" aria-labelledby="editRawMaterialModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editRawMaterialModalLabel">Edit Raw Material</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-rawmaterial-form">
+                            <input type="hidden" id="edit-rawmaterial-id">
+                            <div class="mb-3">
+                                <label for="edit-rawmaterial-id-field" class="form-label">Material ID
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unique identifier for the material, e.g., 'MAT001'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="edit-rawmaterial-id-field" placeholder="e.g., MAT001" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-rawmaterial-name" class="form-label">Name
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the material, e.g., 'Steel Rod'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="edit-rawmaterial-name" placeholder="e.g., Steel Rod" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-rawmaterial-description" class="form-label">Description
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Optional description, e.g., 'High-grade steel for construction'"></i>
+                                </label>
+                                <textarea class="form-control" id="edit-rawmaterial-description" placeholder="e.g., High-grade steel for construction"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-rawmaterial-unit" class="form-label">Unit
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unit of measurement, e.g., 'kg' or 'meters'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="edit-rawmaterial-unit" placeholder="e.g., kg" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-rawmaterial-supplier" class="form-label">Supplier
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the supplier from the list"></i>
+                                </label>
+                                <select class="form-select" id="edit-rawmaterial-supplier" required>
+                                    <option value="">Select Supplier</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-rawmaterial-price" class="form-label">Price per Unit
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Price per unit, e.g., '10.50'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="edit-rawmaterial-price" step="0.01" placeholder="e.g., 10.50" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-rawmaterial-stock" class="form-label">Stock Quantity
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Current stock quantity, e.g., '100'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="edit-rawmaterial-stock" step="0.01" placeholder="e.g., 100" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-rawmaterial-minimum-stock" class="form-label">Minimum Stock
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Minimum stock level for alerts, e.g., '20'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="edit-rawmaterial-minimum-stock" step="0.01" placeholder="e.g., 20" required>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="rawmaterial">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Производственные заказы -->
+        <section id="orders" class="mb-5" data-aos="fade-up" data-aos-delay="300">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-clipboard-list me-2"></i>
+                    <h2 class="card-title mb-0">Production Orders</h2>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addOrderModal">
+                        <i class="fas fa-plus"></i> Add Order
+                    </button>
+                    <table id="order-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Start Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Модальное окно для добавления заказа -->
+        <div class="modal fade" id="addOrderModal" tabindex="-1" aria-labelledby="addOrderModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addOrderModalLabel">Add Production Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-order-form">
+                            <div class="mb-3">
+                                <label for="order-product" class="form-label">Product
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the product to produce"></i>
+                                </label>
+                                <select class="form-select" id="order-product" required>
+                                    <option value="">Select Product</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="order-quantity" class="form-label">Quantity
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity to produce, e.g., '50'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="order-quantity" placeholder="e.g., 50" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="order-start-date" class="form-label">Start Date
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the start date, e.g., '2025-03-26'"></i>
+                                </label>
+                                <input type="date" class="form-control" id="order-start-date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="order-status" class="form-label">Status
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the status, e.g., 'PENDING'"></i>
+                                </label>
+                                <select class="form-select" id="order-status" required>
+                                    <option value="PENDING">Pending</option>
+                                    <option value="IN_PROGRESS">In Progress</option>
+                                    <option value="COMPLETED">Completed</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="order">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Add Order</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для редактирования заказа -->
+        <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editOrderModalLabel">Edit Production Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-order-form">
+                            <input type="hidden" id="edit-order-id">
+                            <input type="hidden" id="edit-order-created-at">
+                            <div class="mb-3">
+                                <label for="edit-order-product" class="form-label">Product
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the product to produce"></i>
+                                </label>
+                                <select class="form-select" id="edit-order-product" required>
+                                    <option value="">Select Product</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-order-quantity" class="form-label">Quantity
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity to produce, e.g., '50'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="edit-order-quantity" placeholder="e.g., 50" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-order-start-date" class="form-label">Start Date
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the start date, e.g., '2025-03-26'"></i>
+                                </label>
+                                <input type="date" class="form-control" id="edit-order-start-date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-order-status" class="form-label">Status
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the status, e.g., 'PENDING'"></i>
+                                </label>
+                                <select class="form-select" id="edit-order-status" required>
+                                    <option value="PENDING">Pending</option>
+                                    <option value="IN_PROGRESS">In Progress</option>
+                                    <option value="COMPLETED">Completed</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="order">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Движения на складе -->
+        <section id="movements" class="mb-5" data-aos="fade-up" data-aos-delay="400">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-exchange-alt me-2"></i>
+                    <h2 class="card-title mb-0">Stock Movements</h2>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addMovementModal">
+                        <i class="fas fa-plus"></i> Add Movement
+                    </button>
+                    <table id="movement-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Material</th>
+                                <th>Movement Type</th>
+                                <th>Quantity</th>
+                                <th>Timestamp</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Модальное окно для добавления движения -->
+        <div class="modal fade" id="addMovementModal" tabindex="-1" aria-labelledby="addMovementModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addMovementModalLabel">Add Stock Movement</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-movement-form">
+                            <div class="mb-3">
+                                <label for="movement-product" class="form-label">Product
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the product (optional)"></i>
+                                </label>
+                                <select class="form-select" id="movement-product">
+                                    <option value="">Select Product (Optional)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="movement-material" class="form-label">Material
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the material (optional)"></i>
+                                </label>
+                                <select class="form-select" id="movement-material">
+                                    <option value="">Select Material (Optional)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="movement-type" class="form-label">Movement Type
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the type, e.g., 'IN' for incoming stock"></i>
+                                </label>
+                                <select class="form-select" id="movement-type" required>
+                                    <option value="IN">IN</option>
+                                    <option value="OUT">OUT</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="movement-quantity" class="form-label">Quantity
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity, e.g., '25'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="movement-quantity" step="0.01" placeholder="e.g., 25" required>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="movement">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Add Movement</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для редактирования движения -->
+        <div class="modal fade" id="editMovementModal" tabindex="-1" aria-labelledby="editMovementModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editMovementModalLabel">Edit Stock Movement</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-movement-form">
+                            <input type="hidden" id="edit-movement-id">
+                            <input type="hidden" id="edit-movement-timestamp">
+                            <div class="mb-3">
+                                <label for="edit-movement-product" class="form-label">Product
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the product (optional)"></i>
+                                </label>
+                                <select class="form-select" id="edit-movement-product">
+                                    <option value="">Select Product (Optional)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-movement-material" class="form-label">Material
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the material (optional)"></i>
+                                </label>
+                                <select class="form-select" id="edit-movement-material">
+                                    <option value="">Select Material (Optional)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-movement-type" class="form-label">Movement Type
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the type, e.g., 'IN' for incoming stock"></i>
+                                </label>
+                                <select class="form-select" id="edit-movement-type" required>
+                                    <option value="IN">IN</option>
+                                    <option value="OUT">OUT</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-movement-quantity" class="form-label">Quantity
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity, e.g., '25'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="edit-movement-quantity" step="0.01" placeholder="e.g., 25" required>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="movement">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Продукты -->
+        <section id="products" class="mb-5" data-aos="fade-up" data-aos-delay="500">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-cubes me-2"></i>
+                    <h2 class="card-title mb-0">Products</h2>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                    <table id="product-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Stock Quantity</th>
+                                <th>Minimum Stock</th>
+                                <th>Unit</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Модальное окно для добавления продукта -->
+        <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-product-form">
+                            <div class="mb-3">
+                                <label for="product-name" class="form-label">Name
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the product, e.g., 'Widget A'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="product-name" placeholder="e.g., Widget A" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="product-description" class="form-label">Description
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Optional description, e.g., 'A high-quality widget'"></i>
+                                </label>
+                                <textarea class="form-control" id="product-description" placeholder="e.g., A high-quality widget"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="product-unit" class="form-label">Unit
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unit of measurement, e.g., 'pcs'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="product-unit" placeholder="e.g., pcs" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="product-price" class="form-label">Price per Unit
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Price per unit, e.g., '5.00'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="product-price" step="0.01" placeholder="e.g., 5.00" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="product-stock" class="form-label">Stock Quantity
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Current stock quantity, e.g., '200'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="product-stock" step="0.01" placeholder="e.g., 200" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="product-minimum-stock" class="form-label">Minimum Stock
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Minimum stock level for alerts, e.g., '50'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="product-minimum-stock" step="0.01" placeholder="e.g., 50" required>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="product">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Add Product</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для редактирования продукта -->
+        <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-product-form">
+                            <input type="hidden" id="edit-product-id">
+                            <input type="hidden" id="edit-product-created-at">
+                            <div class="mb-3">
+                                <label for="edit-product-name" class="form-label">Name
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the product, e.g., 'Widget A'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="edit-product-name" placeholder="e.g., Widget A" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-product-description" class="form-label">Description
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Optional description, e.g., 'A high-quality widget'"></i>
+                                </label>
+                                <textarea class="form-control" id="edit-product-description" placeholder="e.g., A high-quality widget"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-product-unit" class="form-label">Unit
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unit of measurement, e.g., 'pcs'"></i>
+                                </label>
+                                <input type="text" class="form-control" id="edit-product-unit" placeholder="e.g., pcs" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-product-price" class="form-label">Price per Unit
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Price per unit, e.g., '5.00'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="edit-product-price" step="0.01" placeholder="e.g., 5.00" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-product-stock" class="form-label">Stock Quantity
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Current stock quantity, e.g., '200'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="edit-product-stock" step="0.01" placeholder="e.g., 200" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-product-minimum-stock" class="form-label">Minimum Stock
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Minimum stock level for alerts, e.g., '50'"></i>
+                                </label>
+                                <input type="number" class="form-control" id="edit-product-minimum-stock" step="0.01" placeholder="e.g., 50" required>
+                            </div>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="product">Show Example</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Лог аудита -->
+        <section id="auditlog" class="mb-5" data-aos="fade-up" data-aos-delay="600">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-history me-2"></i>
+                    <h2 class="card-title mb-0">Audit Log</h2>
+                </div>
+                <div class="card-body">
+                    <table id="auditlog-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Object ID</th>
+                                <th>Action</th>
+                                <th>Timestamp</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Отчёты -->
+        <section id="reports" class="mb-5" data-aos="fade-up" data-aos-delay="700">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    <h2 class="card-title mb-0">Reports</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Фильтр по датам -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="report-start-date" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="report-start-date">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="report-end-date" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="report-end-date">
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-primary" id="apply-date-filter">Apply Filter</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h3>Raw Material Usage</h3>
+                            <canvas id="rawMaterialChart"></canvas>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h3>Order Status Distribution</h3>
+                            <canvas id="orderStatusChart"></canvas>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h3>Stock Movements Over Time</h3>
+                            <canvas id="stockMovementChart"></canvas>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h3>Inventory Cost Breakdown</h3>
+                            <canvas id="inventoryCostChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom JS -->
+    <script src="/static/script.js"></script>
+</body>
+</html>
