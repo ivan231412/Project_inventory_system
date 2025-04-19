@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_el-6u_ti&!kjygieigwr-j+wh#+secg-nxt$7-jmjcl)o-hp6'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')  # Убедитесь, что переменная DJANGO_SECRET_KEY задана
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'inventory',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -90,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'inventory_db',
         'USER': 'postgres',
-        'PASSWORD': 'your_password',  # Замени на пароль, который ты указал при установке PostgreSQL
+        'PASSWORD': 'your_password',
         'HOST': 'db',
         'PORT': '5432',
     }
@@ -142,6 +143,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
 }
 
-СORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True

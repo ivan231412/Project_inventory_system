@@ -1,11 +1,10 @@
-
 services:
   db:
     image: postgres:15
     environment:
       POSTGRES_DB: inventory_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: your_password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-your_password}
     volumes:
       - db_data:/var/lib/postgresql/data
 
@@ -14,6 +13,9 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-admin}  
 
   web:
     build: .
@@ -21,7 +23,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8001:8000"
+      - "8000:8000"
     depends_on:
       - db
       - rabbitmq

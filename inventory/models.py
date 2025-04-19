@@ -1,4 +1,5 @@
 from django.db import models
+from .tasks import send_to_rabbitmq  # Перемещён импорт
 
 class Supplier(models.Model):
     name = models.CharField(max_length=100)
@@ -21,6 +22,11 @@ class RawMaterial(models.Model):
     minimum_stock = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if self.stock_quantity < 0 or self.minimum_stock < 0:
+            raise ValueError("Stock quantity and minimum stock cannot be negative.")
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -28,6 +34,7 @@ class RawMaterialUsage(models.Model):
     order = models.ForeignKey('ProductionOrder', on_delete=models.CASCADE)
     material = models.ForeignKey(RawMaterial, on_delete=models.CASCADE)
     quantity_used = models.DecimalField(max_digits=10, decimal_places=2)
+    usage_date = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
 
@@ -40,24 +47,19 @@ class ProductionOrder(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        # Проверяем, что запись новая (не обновление)
-        if not self.pk:
+        if not self.pk:  # Проверяем, что запись новая (не обновление)
             super().save(*args, **kwargs)  # Сначала сохраняем заказ
-            # Предположим, что для 1 единицы продукции нужно 2 единицы сырья
             raw_materials = RawMaterial.objects.all()[:1]  # Для примера берём первое сырьё
             if raw_materials:
                 material = raw_materials[0]
                 quantity_needed = self.quantity * 2  # 2 единицы сырья на 1 единицу продукции
                 if material.stock_quantity < quantity_needed:
                     raise ValueError("Недостаточно сырья для выполнения заказа!")
-                # Создаём запись об использовании сырья
                 RawMaterialUsage.objects.create(
                     order=self,
                     material=material,
-                    quantity_used=quantity_needed,
-                    updated_at=self.created_at
+                    quantity_used=quantity_needed
                 )
-                # Списываем сырьё
                 material.stock_quantity -= quantity_needed
                 material.save()
         else:
@@ -74,9 +76,8 @@ class StockMovement(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        # Проверяем, что запись новая (не обновление)
-        if not self.pk:
-            if self.material:  # Если движение связано с сырьём
+        if not self.pk:  # Проверяем, что запись новая (не обновление)
+            if self.material:
                 if self.movement_type == "IN":
                     self.material.stock_quantity += self.quantity
                 elif self.movement_type == "OUT":
@@ -84,7 +85,7 @@ class StockMovement(models.Model):
                         raise ValueError("Недостаточно сырья на складе!")
                     self.material.stock_quantity -= self.quantity
                 self.material.save()
-            elif self.product:  # Если движение связано с продукцией
+            elif self.product:
                 if self.movement_type == "IN":
                     self.product.stock_quantity += self.quantity
                 elif self.movement_type == "OUT":
@@ -94,7 +95,6 @@ class StockMovement(models.Model):
                 self.product.save()
 
         super().save(*args, **kwargs)
-        from .tasks import send_to_rabbitmq
         message = {
             'movement_id': self.id,
             'product_id': self.product.id if self.product else None,
@@ -102,7 +102,10 @@ class StockMovement(models.Model):
             'movement_type': self.movement_type,
             'quantity': str(self.quantity),
         }
-        send_to_rabbitmq(message)
+        try:
+            send_to_rabbitmq(message)
+        except Exception as e:
+            raise RuntimeError(f"Ошибка при отправке сообщения в RabbitMQ: {e}")
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -112,22 +115,23 @@ class Product(models.Model):
     stock_quantity = models.DecimalField(max_digits=10, decimal_places=2)
     minimum_stock = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
+    def save(self, *args, **kwargs):
+        if self.stock_quantity < 0 or self.minimum_stock < 0:
+            raise ValueError("Stock quantity and minimum stock cannot be negative.")
+        super().save(*args, **kwargs)
+        message = {
+            'product_id': self.id,
+            'name': self.name,
+            'stock_quantity': str(self.stock_quantity),
+        }
+        try:
+            send_to_rabbitmq(message)
+        except Exception as e:
+            raise RuntimeError(f"Ошибка при отправке сообщения в RabbitMQ: {e}")
 
     def __str__(self):
         return self.name
-    
-def save(self, *args, **kwargs):
-    super().save(*args, **kwargs)
-    from .tasks import send_to_rabbitmq
-    message = {
-        'movement_id': self.id,
-        'product_id': self.product.id if self.product else None,
-        'material_id': self.material.id if self.material else None,
-        'movement_type': self.movement_type,
-        'quantity': str(self.quantity),
-    }
-    send_to_rabbitmq(message)
 
 class AuditLog(models.Model):
     ACTION_CHOICES = (

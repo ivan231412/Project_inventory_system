@@ -130,7 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
         lowStockAlerts.innerHTML = '';
 
         fetch('http://localhost:8000/api/rawmaterials/')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 data.forEach(material => {
                     if (material.stock_quantity < material.minimum_stock) {
@@ -148,11 +153,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             })
             .catch(error => {
-                showToast('Error checking raw materials stock: ' + error, 'danger');
+                showToast('Error checking raw materials stock: ' + error.message, 'danger');
             });
 
         fetch('http://localhost:8000/api/products/')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 data.forEach(product => {
                     if (product.stock_quantity < product.minimum_stock) {
@@ -170,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             })
             .catch(error => {
-                showToast('Error checking products stock: ' + error, 'danger');
+                showToast('Error checking products stock: ' + error.message, 'danger');
             });
     };
 
@@ -250,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('add-supplier-form').reset();
         })
         .catch(error => {
-            showToast('Error adding supplier: ' + error, 'danger');
+            showToast('Error adding supplier: ' + error.message, 'danger');
         });
     });
 
@@ -277,13 +287,18 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.hide();
         })
         .catch(error => {
-            showToast('Error updating supplier: ' + error, 'danger');
+            showToast('Error updating supplier: ' + error.message, 'danger');
         });
     });
 
     // Сырьё
     fetch('http://localhost:8000/api/suppliers/')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             const addSelect = document.getElementById('rawmaterial-supplier');
             const editSelect = document.getElementById('edit-rawmaterial-supplier');
@@ -298,6 +313,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 option2.textContent = supplier.name;
                 editSelect.appendChild(option2);
             });
+        })
+        .catch(error => {
+            showToast('Error fetching suppliers: ' + error.message, 'danger');
         });
 
     document.getElementById('add-rawmaterial-form').addEventListener('submit', (e) => {
@@ -328,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkLowStock();
         })
         .catch(error => {
-            showToast('Error adding raw material: ' + error, 'danger');
+            showToast('Error adding raw material: ' + error.message, 'danger');
         });
     });
 
@@ -360,13 +378,18 @@ document.addEventListener('DOMContentLoaded', () => {
             checkLowStock();
         })
         .catch(error => {
-            showToast('Error updating raw material: ' + error, 'danger');
+            showToast('Error updating raw material: ' + error.message, 'danger');
         });
     });
 
     // Производственные заказы
     fetch('http://localhost:8000/api/products/')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             const addSelect = document.getElementById('order-product');
             const editSelect = document.getElementById('edit-order-product');
@@ -381,6 +404,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 option2.textContent = product.name;
                 editSelect.appendChild(option2);
             });
+        })
+        .catch(error => {
+            showToast('Error fetching products: ' + error.message, 'danger');
         });
 
     document.getElementById('add-order-form').addEventListener('submit', (e) => {
@@ -406,7 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('add-order-form').reset();
         })
         .catch(error => {
-            showToast('Error adding order: ' + error, 'danger');
+            showToast('Error adding order: ' + error.message, 'danger');
         });
     });
 
@@ -433,13 +459,18 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.hide();
         })
         .catch(error => {
-            showToast('Error updating order: ' + error, 'danger');
+            showToast('Error updating order: ' + error.message, 'danger');
         });
     });
 
     // Движения на складе
     fetch('http://localhost:8000/api/products/')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             const addSelect = document.getElementById('movement-product');
             const editSelect = document.getElementById('edit-movement-product');
@@ -454,10 +485,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 option2.textContent = product.name;
                 editSelect.appendChild(option2);
             });
+        })
+        .catch(error => {
+            showToast('Error fetching products: ' + error.message, 'danger');
         });
 
     fetch('http://localhost:8000/api/rawmaterials/')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             const addSelect = document.getElementById('movement-material');
             const editSelect = document.getElementById('edit-movement-material');
@@ -472,6 +511,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 option2.textContent = material.name;
                 editSelect.appendChild(option2);
             });
+        })
+        .catch(error => {
+            showToast('Error fetching raw materials: ' + error.message, 'danger');
         });
 
     document.getElementById('add-movement-form').addEventListener('submit', (e) => {
@@ -498,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkLowStock();
         })
         .catch(error => {
-            showToast('Error adding movement: ' + error, 'danger');
+            showToast('Error adding movement: ' + error.message, 'danger');
         });
     });
 
@@ -526,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkLowStock();
         })
         .catch(error => {
-            showToast('Error updating movement: ' + error, 'danger');
+            showToast('Error updating movement: ' + error.message, 'danger');
         });
     });
 
@@ -557,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkLowStock();
         })
         .catch(error => {
-            showToast('Error adding product: ' + error, 'danger');
+            showToast('Error adding product: ' + error.message, 'danger');
         });
     });
 
@@ -587,7 +629,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkLowStock();
         })
         .catch(error => {
-            showToast('Error updating product: ' + error, 'danger');
+            showToast('Error updating product: ' + error.message, 'danger');
         });
     });
 
@@ -596,7 +638,12 @@ document.addEventListener('DOMContentLoaded', () => {
         $(document).on('click', `#${tableId} .edit-btn`, function () {
             const id = $(this).data('id');
             fetch(`http://localhost:8000/api/${endpoint}/${id}/`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (endpoint === 'suppliers') {
                         document.getElementById('edit-supplier-id').value = data.id;
@@ -643,7 +690,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     modal.show();
                 })
                 .catch(error => {
-                    showToast(`Error loading data: ${error}`, 'danger');
+                    showToast(`Error loading data: ${error.message}`, 'danger');
                 });
         });
 
@@ -662,7 +709,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 })
                 .catch(error => {
-                    showToast(`Error deleting record: ${error}`, 'danger');
+                    showToast(`Error deleting record: ${error.message}`, 'danger');
                 });
             }
         });
@@ -713,7 +760,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         fetch(url)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 // Raw Material Usage
                 const rawMaterialCtx = document.getElementById('rawMaterialChart').getContext('2d');
@@ -823,7 +875,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             })
             .catch(error => {
-                showToast('Error loading reports: ' + error, 'danger');
+                showToast('Error loading reports: ' + error.message, 'danger');
             });
     };
 

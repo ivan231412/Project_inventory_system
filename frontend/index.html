@@ -25,17 +25,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#suppliers">Suppliers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#raw-materials">Raw Materials</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#orders">Production Orders</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#movements">Stock Movements</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#auditlog">Audit Log</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#reports">Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#dashboard">Объявления</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#suppliers">Поставщики</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#raw-materials">Сырьё</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#orders">Производственные заказы</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#movements">Движения на складе</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Продукты</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#auditlog">Журнал обновлений</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#reports">Отчёты</a></li>
                 </ul>
                 <button class="btn btn-outline-light ms-auto" id="theme-toggle">
-                    <i class="fas fa-sun"></i> Toggle Theme
+                    <i class="fas fa-sun"></i> Смена темы
                 </button>
             </div>
         </div>
@@ -50,10 +50,10 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
                     <i class="fas fa-tachometer-alt me-2"></i>
-                    <h2 class="card-title mb-0">Dashboard</h2>
+                    <h2 class="card-title mb-0">Объявления</h2>
                 </div>
                 <div class="card-body">
-                    <h3>Low Stock Alerts</h3>
+                    <h3>Оповещение о низких запасах</h3>
                     <div id="low-stock-alerts"></div>
                 </div>
             </div>
@@ -64,21 +64,21 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
                     <i class="fas fa-users me-2"></i>
-                    <h2 class="card-title mb-0">Suppliers</h2>
+                    <h2 class="card-title mb-0">Поставщики</h2>
                 </div>
                 <div class="card-body">
                     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
-                        <i class="fas fa-plus"></i> Add Supplier
+                        <i class="fas fa-plus"></i> добавления поставщика
                     </button>
                     <table id="supplier-table" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Contact Person</th>
-                                <th>Phone</th>
+                                <th>Имя</th>
+                                <th>Контактное лицо</th>
+                                <th>Телефон</th>
                                 <th>Email</th>
-                                <th>Address</th>
-                                <th>Actions</th>
+                                <th>Адрес</th>
+                                <th>Действие</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -92,25 +92,25 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addSupplierModalLabel">Add Supplier</h5>
+                        <h5 class="modal-title" id="addSupplierModalLabel">добавления поставщика</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="add-supplier-form">
                             <div class="mb-3">
-                                <label for="supplier-name" class="form-label">Name
+                                <label for="supplier-name" class="form-label">Имя
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier's company name, e.g., 'ABC Supplies'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="supplier-name" placeholder="e.g., ABC Supplies" required>
                             </div>
                             <div class="mb-3">
-                                <label for="supplier-contact" class="form-label">Contact Person
+                                <label for="supplier-contact" class="form-label">Контактное лицо
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the name of the contact person, e.g., 'John Doe'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="supplier-contact" placeholder="e.g., John Doe" required>
                             </div>
                             <div class="mb-3">
-                                <label for="supplier-phone" class="form-label">Phone
+                                <label for="supplier-phone" class="form-label">Телефон
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the phone number, e.g., '+1234567890'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="supplier-phone" placeholder="e.g., +1234567890" required>
@@ -122,13 +122,13 @@
                                 <input type="email" class="form-control" id="supplier-email" placeholder="e.g., contact@abcsupplies.com" required>
                             </div>
                             <div class="mb-3">
-                                <label for="supplier-address" class="form-label">Address
+                                <label for="supplier-address" class="form-label">Адрес
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier's address, e.g., '123 Main St, City'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="supplier-address" placeholder="e.g., 123 Main St, City" required>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="supplier">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Add Supplier</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="supplier">Показать пример</button>
+                            <button type="submit" class="btn btn-primary">Добавить поставщика</button>
                         </form>
                     </div>
                 </div>
@@ -140,26 +140,26 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editSupplierModalLabel">Edit Supplier</h5>
+                        <h5 class="modal-title" id="editSupplierModalLabel">редактирования поставщика</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="edit-supplier-form">
                             <input type="hidden" id="edit-supplier-id">
                             <div class="mb-3">
-                                <label for="edit-supplier-name" class="form-label">Name
+                                <label for="edit-supplier-name" class="form-label">Имя
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier's company name, e.g., 'ABC Supplies'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="edit-supplier-name" placeholder="e.g., ABC Supplies" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-supplier-contact" class="form-label">Contact Person
+                                <label for="edit-supplier-contact" class="form-label">Контактное лицо
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the name of the contact person, e.g., 'John Doe'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="edit-supplier-contact" placeholder="e.g., John Doe" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-supplier-phone" class="form-label">Phone
+                                <label for="edit-supplier-phone" class="form-label">Телефон
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the phone number, e.g., '+1234567890'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="edit-supplier-phone" placeholder="e.g., +1234567890" required>
@@ -171,13 +171,13 @@
                                 <input type="email" class="form-control" id="edit-supplier-email" placeholder="e.g., contact@abcsupplies.com" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-supplier-address" class="form-label">Address
+                                <label for="edit-supplier-address" class="form-label">Адрес
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier's address, e.g., '123 Main St, City'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="edit-supplier-address" placeholder="e.g., 123 Main St, City" required>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="supplier">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="supplier">Показать пример</button>
+                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                         </form>
                     </div>
                 </div>
@@ -189,21 +189,21 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
                     <i class="fas fa-boxes me-2"></i>
-                    <h2 class="card-title mb-0">Raw Materials</h2>
+                    <h2 class="card-title mb-0">Сырьё</h2>
                 </div>
                 <div class="card-body">
                     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addRawMaterialModal">
-                        <i class="fas fa-plus"></i> Add Raw Material
+                        <i class="fas fa-plus"></i> Добавить Сырьё
                     </button>
                     <table id="rawmaterial-table" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Material ID</th>
-                                <th>Name</th>
-                                <th>Supplier</th>
-                                <th>Stock Quantity</th>
-                                <th>Minimum Stock</th>
-                                <th>Actions</th>
+                                <th>Имя</th>
+                                <th>Поставщики</th>
+                                <th>Количество на складе</th>
+                                <th>Минимальный запас</th>
+                                <th>Действие</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -217,7 +217,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addRawMaterialModalLabel">Add Raw Material</h5>
+                        <h5 class="modal-title" id="addRawMaterialModalLabel">Добавить Сырьё</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -229,51 +229,51 @@
                                 <input type="text" class="form-control" id="rawmaterial-id" placeholder="e.g., MAT001" required>
                             </div>
                             <div class="mb-3">
-                                <label for="rawmaterial-name" class="form-label">Name
+                                <label for="rawmaterial-name" class="form-label">Имя
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the material, e.g., 'Steel Rod'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="rawmaterial-name" placeholder="e.g., Steel Rod" required>
                             </div>
                             <div class="mb-3">
-                                <label for="rawmaterial-description" class="form-label">Description
+                                <label for="rawmaterial-description" class="form-label">Описание
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Optional description, e.g., 'High-grade steel for construction'"></i>
                                 </label>
                                 <textarea class="form-control" id="rawmaterial-description" placeholder="e.g., High-grade steel for construction"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="rawmaterial-unit" class="form-label">Unit
+                                <label for="rawmaterial-unit" class="form-label">Еденица
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unit of measurement, e.g., 'kg' or 'meters'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="rawmaterial-unit" placeholder="e.g., kg" required>
                             </div>
                             <div class="mb-3">
-                                <label for="rawmaterial-supplier" class="form-label">Supplier
+                                <label for="rawmaterial-supplier" class="form-label">Поставщики
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the supplier from the list"></i>
                                 </label>
                                 <select class="form-select" id="rawmaterial-supplier" required>
-                                    <option value="">Select Supplier</option>
+                                    <option value="">Выбрать поставшика</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="rawmaterial-price" class="form-label">Price per Unit
+                                <label for="rawmaterial-price" class="form-label">Цена за еденицу
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Price per unit, e.g., '10.50'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="rawmaterial-price" step="0.01" placeholder="e.g., 10.50" required>
                             </div>
                             <div class="mb-3">
-                                <label for="rawmaterial-stock" class="form-label">Stock Quantity
+                                <label for="rawmaterial-stock" class="form-label">лимит
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Current stock quantity, e.g., '100'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="rawmaterial-stock" step="0.01" placeholder="e.g., 100" required>
                             </div>
                             <div class="mb-3">
-                                <label for="rawmaterial-minimum-stock" class="form-label">Minimum Stock
+                                <label for="rawmaterial-minimum-stock" class="form-label">Минимальный запас
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Minimum stock level for alerts, e.g., '20'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="rawmaterial-minimum-stock" step="0.01" placeholder="e.g., 20" required>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="rawmaterial">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Add Raw Material</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="rawmaterial">Показать пример</button>
+                            <button type="submit" class="btn btn-primary">Добавить материал</button>
                         </form>
                     </div>
                 </div>
@@ -285,7 +285,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editRawMaterialModalLabel">Edit Raw Material</h5>
+                        <h5 class="modal-title" id="editRawMaterialModalLabel">Изменить материал</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -298,51 +298,51 @@
                                 <input type="text" class="form-control" id="edit-rawmaterial-id-field" placeholder="e.g., MAT001" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-rawmaterial-name" class="form-label">Name
+                                <label for="edit-rawmaterial-name" class="form-label">Имя
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the material, e.g., 'Steel Rod'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="edit-rawmaterial-name" placeholder="e.g., Steel Rod" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-rawmaterial-description" class="form-label">Description
+                                <label for="edit-rawmaterial-description" class="form-label">Описание
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Optional description, e.g., 'High-grade steel for construction'"></i>
                                 </label>
                                 <textarea class="form-control" id="edit-rawmaterial-description" placeholder="e.g., High-grade steel for construction"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-rawmaterial-unit" class="form-label">Unit
+                                <label for="edit-rawmaterial-unit" class="form-label">Еденица
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unit of measurement, e.g., 'kg' or 'meters'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="edit-rawmaterial-unit" placeholder="e.g., kg" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-rawmaterial-supplier" class="form-label">Supplier
+                                <label for="edit-rawmaterial-supplier" class="form-label">поставшика
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the supplier from the list"></i>
                                 </label>
                                 <select class="form-select" id="edit-rawmaterial-supplier" required>
-                                    <option value="">Select Supplier</option>
+                                    <option value="">выбрать поставшика</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-rawmaterial-price" class="form-label">Price per Unit
+                                <label for="edit-rawmaterial-price" class="form-label">Цена за еденицу
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Price per unit, e.g., '10.50'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="edit-rawmaterial-price" step="0.01" placeholder="e.g., 10.50" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-rawmaterial-stock" class="form-label">Stock Quantity
+                                <label for="edit-rawmaterial-stock" class="form-label">лимит
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Current stock quantity, e.g., '100'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="edit-rawmaterial-stock" step="0.01" placeholder="e.g., 100" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-rawmaterial-minimum-stock" class="form-label">Minimum Stock
+                                <label for="edit-rawmaterial-minimum-stock" class="form-label">минимальный запас
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Minimum stock level for alerts, e.g., '20'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="edit-rawmaterial-minimum-stock" step="0.01" placeholder="e.g., 20" required>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="rawmaterial">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="rawmaterial">Показать пример</button>
+                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                         </form>
                     </div>
                 </div>
@@ -354,20 +354,20 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
                     <i class="fas fa-clipboard-list me-2"></i>
-                    <h2 class="card-title mb-0">Production Orders</h2>
+                    <h2 class="card-title mb-0">Производственные заказы</h2>
                 </div>
                 <div class="card-body">
                     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addOrderModal">
-                        <i class="fas fa-plus"></i> Add Order
+                        <i class="fas fa-plus"></i> Добавить заказ
                     </button>
                     <table id="order-table" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Status</th>
-                                <th>Start Date</th>
-                                <th>Actions</th>
+                                <th>Продукт</th>
+                                <th>Количество</th>
+                                <th>Статус</th>
+                                <th>Дата начала</th>
+                                <th>Действие</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -381,43 +381,43 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addOrderModalLabel">Add Production Order</h5>
+                        <h5 class="modal-title" id="addOrderModalLabel">Добавить заказ</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="add-order-form">
                             <div class="mb-3">
-                                <label for="order-product" class="form-label">Product
+                                <label for="order-product" class="form-label">продукт
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the product to produce"></i>
                                 </label>
                                 <select class="form-select" id="order-product" required>
-                                    <option value="">Select Product</option>
+                                    <option value="">выбрать продукт</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="order-quantity" class="form-label">Quantity
+                                <label for="order-quantity" class="form-label">Количество
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity to produce, e.g., '50'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="order-quantity" placeholder="e.g., 50" required>
                             </div>
                             <div class="mb-3">
-                                <label for="order-start-date" class="form-label">Start Date
+                                <label for="order-start-date" class="form-label">Начало
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the start date, e.g., '2025-03-26'"></i>
                                 </label>
                                 <input type="date" class="form-control" id="order-start-date" required>
                             </div>
                             <div class="mb-3">
-                                <label for="order-status" class="form-label">Status
+                                <label for="order-status" class="form-label">Статус
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the status, e.g., 'PENDING'"></i>
                                 </label>
                                 <select class="form-select" id="order-status" required>
-                                    <option value="PENDING">Pending</option>
-                                    <option value="IN_PROGRESS">In Progress</option>
-                                    <option value="COMPLETED">Completed</option>
+                                    <option value="PENDING">в ожидании</option>
+                                    <option value="IN_PROGRESS">в процессе</option>
+                                    <option value="COMPLETED">готово</option>
                                 </select>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="order">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Add Order</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="order">показать пример</button>
+                            <button type="submit" class="btn btn-primary">добавить заказ</button>
                         </form>
                     </div>
                 </div>
@@ -429,7 +429,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editOrderModalLabel">Edit Production Order</h5>
+                        <h5 class="modal-title" id="editOrderModalLabel">изименить заказ</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -437,37 +437,37 @@
                             <input type="hidden" id="edit-order-id">
                             <input type="hidden" id="edit-order-created-at">
                             <div class="mb-3">
-                                <label for="edit-order-product" class="form-label">Product
+                                <label for="edit-order-product" class="form-label">продукт
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the product to produce"></i>
                                 </label>
                                 <select class="form-select" id="edit-order-product" required>
-                                    <option value="">Select Product</option>
+                                    <option value="">выбрать продукт</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-order-quantity" class="form-label">Quantity
+                                <label for="edit-order-quantity" class="form-label">Количество
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity to produce, e.g., '50'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="edit-order-quantity" placeholder="e.g., 50" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-order-start-date" class="form-label">Start Date
+                                <label for="edit-order-start-date" class="form-label">Дата начала
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the start date, e.g., '2025-03-26'"></i>
                                 </label>
                                 <input type="date" class="form-control" id="edit-order-start-date" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-order-status" class="form-label">Status
+                                <label for="edit-order-status" class="form-label">Статутс   
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the status, e.g., 'PENDING'"></i>
                                 </label>
                                 <select class="form-select" id="edit-order-status" required>
-                                    <option value="PENDING">Pending</option>
-                                    <option value="IN_PROGRESS">In Progress</option>
-                                    <option value="COMPLETED">Completed</option>
+                                    <option value="PENDING">в ожидании</option>
+                                    <option value="IN_PROGRESS">в процессе</option>
+                                    <option value="COMPLETED">готово</option>
                                 </select>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="order">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="order">показать пример</button>
+                            <button type="submit" class="btn btn-primary">сохранить изименения</button>
                         </form>
                     </div>
                 </div>
@@ -479,21 +479,21 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
                     <i class="fas fa-exchange-alt me-2"></i>
-                    <h2 class="card-title mb-0">Stock Movements</h2>
+                    <h2 class="card-title mb-0">Движения продукции</h2>
                 </div>
                 <div class="card-body">
                     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addMovementModal">
-                        <i class="fas fa-plus"></i> Add Movement
+                        <i class="fas fa-plus"></i> добавить перемещения
                     </button>
                     <table id="movement-table" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Material</th>
-                                <th>Movement Type</th>
-                                <th>Quantity</th>
-                                <th>Timestamp</th>
-                                <th>Actions</th>
+                                <th>продукт</th>
+                                <th>материал</th>
+                                <th>путь</th>
+                                <th>Количество</th>
+                                <th>временная метка</th>
+                                <th>Действие</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -507,44 +507,44 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addMovementModalLabel">Add Stock Movement</h5>
+                        <h5 class="modal-title" id="addMovementModalLabel">добавить перемещения</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="add-movement-form">
                             <div class="mb-3">
-                                <label for="movement-product" class="form-label">Product
+                                <label for="movement-product" class="form-label">продукт
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the product (optional)"></i>
                                 </label>
                                 <select class="form-select" id="movement-product">
-                                    <option value="">Select Product (Optional)</option>
+                                    <option value="">выбор продукта (опционально)</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="movement-material" class="form-label">Material
+                                <label for="movement-material" class="form-label">материал
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the material (optional)"></i>
                                 </label>
                                 <select class="form-select" id="movement-material">
-                                    <option value="">Select Material (Optional)</option>
+                                    <option value="">выбор материала (опционально)</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="movement-type" class="form-label">Movement Type
+                                <label for="movement-type" class="form-label">Тип перемешения
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the type, e.g., 'IN' for incoming stock"></i>
                                 </label>
                                 <select class="form-select" id="movement-type" required>
-                                    <option value="IN">IN</option>
-                                    <option value="OUT">OUT</option>
+                                    <option value="IN">в</option>
+                                    <option value="OUT">из</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="movement-quantity" class="form-label">Quantity
+                                <label for="movement-quantity" class="form-label">Количество
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity, e.g., '25'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="movement-quantity" step="0.01" placeholder="e.g., 25" required>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="movement">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Add Movement</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="movement">показать пример</button>
+                            <button type="submit" class="btn btn-primary">добавить перемещения</button>
                         </form>
                     </div>
                 </div>
@@ -556,7 +556,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editMovementModalLabel">Edit Stock Movement</h5>
+                        <h5 class="modal-title" id="editMovementModalLabel">изменить перемешения</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -564,38 +564,38 @@
                             <input type="hidden" id="edit-movement-id">
                             <input type="hidden" id="edit-movement-timestamp">
                             <div class="mb-3">
-                                <label for="edit-movement-product" class="form-label">Product
+                                <label for="edit-movement-product" class="form-label">продукт
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the product (optional)"></i>
                                 </label>
                                 <select class="form-select" id="edit-movement-product">
-                                    <option value="">Select Product (Optional)</option>
+                                    <option value="">выбрать продукт (опционально)</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-movement-material" class="form-label">Material
+                                <label for="edit-movement-material" class="form-label">материал
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the material (optional)"></i>
                                 </label>
                                 <select class="form-select" id="edit-movement-material">
-                                    <option value="">Select Material (Optional)</option>
+                                    <option value="">выбрать материал (опционально)</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-movement-type" class="form-label">Movement Type
+                                <label for="edit-movement-type" class="form-label">Тип перемешения
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the type, e.g., 'IN' for incoming stock"></i>
                                 </label>
                                 <select class="form-select" id="edit-movement-type" required>
-                                    <option value="IN">IN</option>
-                                    <option value="OUT">OUT</option>
+                                    <option value="IN">в</option>
+                                    <option value="OUT">из</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-movement-quantity" class="form-label">Quantity
+                                <label for="edit-movement-quantity" class="form-label">Количество
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity, e.g., '25'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="edit-movement-quantity" step="0.01" placeholder="e.g., 25" required>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="movement">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="movement">показать пример</button>
+                            <button type="submit" class="btn btn-primary">сохранить изименения</button>
                         </form>
                     </div>
                 </div>
@@ -607,20 +607,20 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
                     <i class="fas fa-cubes me-2"></i>
-                    <h2 class="card-title mb-0">Products</h2>
+                    <h2 class="card-title mb-0">Продукты</h2>
                 </div>
                 <div class="card-body">
                     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
-                        <i class="fas fa-plus"></i> Add Product
+                        <i class="fas fa-plus"></i> Добавить продукт
                     </button>
                     <table id="product-table" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Stock Quantity</th>
-                                <th>Minimum Stock</th>
-                                <th>Unit</th>
-                                <th>Actions</th>
+                                <th>Название</th>
+                                <th>Количество</th>
+                                <th>Мин. количество</th>
+                                <th>Единицы</th>
+                                <th>Действие</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -634,49 +634,49 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                        <h5 class="modal-title" id="addProductModalLabel">добавить продукт</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="add-product-form">
                             <div class="mb-3">
-                                <label for="product-name" class="form-label">Name
+                                <label for="product-name" class="form-label">название
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the product, e.g., 'Widget A'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="product-name" placeholder="e.g., Widget A" required>
                             </div>
                             <div class="mb-3">
-                                <label for="product-description" class="form-label">Description
+                                <label for="product-description" class="form-label">Описание
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Optional description, e.g., 'A high-quality widget'"></i>
                                 </label>
                                 <textarea class="form-control" id="product-description" placeholder="e.g., A high-quality widget"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="product-unit" class="form-label">Unit
+                                <label for="product-unit" class="form-label">Еденица
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unit of measurement, e.g., 'pcs'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="product-unit" placeholder="e.g., pcs" required>
                             </div>
                             <div class="mb-3">
-                                <label for="product-price" class="form-label">Price per Unit
+                                <label for="product-price" class="form-label">Стоймость
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Price per unit, e.g., '5.00'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="product-price" step="0.01" placeholder="e.g., 5.00" required>
                             </div>
                             <div class="mb-3">
-                                <label for="product-stock" class="form-label">Stock Quantity
+                                <label for="product-stock" class="form-label">Лимит
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Current stock quantity, e.g., '200'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="product-stock" step="0.01" placeholder="e.g., 200" required>
                             </div>
                             <div class="mb-3">
-                                <label for="product-minimum-stock" class="form-label">Minimum Stock
+                                <label for="product-minimum-stock" class="form-label">мин остаток
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Minimum stock level for alerts, e.g., '50'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="product-minimum-stock" step="0.01" placeholder="e.g., 50" required>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="product">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Add Product</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="product">показать пример</button>
+                            <button type="submit" class="btn btn-primary">добавть продукт</button>
                         </form>
                     </div>
                 </div>
@@ -688,7 +688,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                        <h5 class="modal-title" id="editProductModalLabel">изменения продукта</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -696,43 +696,43 @@
                             <input type="hidden" id="edit-product-id">
                             <input type="hidden" id="edit-product-created-at">
                             <div class="mb-3">
-                                <label for="edit-product-name" class="form-label">Name
+                                <label for="edit-product-name" class="form-label">название
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the product, e.g., 'Widget A'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="edit-product-name" placeholder="e.g., Widget A" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-product-description" class="form-label">Description
+                                <label for="edit-product-description" class="form-label">Описание
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Optional description, e.g., 'A high-quality widget'"></i>
                                 </label>
                                 <textarea class="form-control" id="edit-product-description" placeholder="e.g., A high-quality widget"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-product-unit" class="form-label">Unit
+                                <label for="edit-product-unit" class="form-label">Еденица
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unit of measurement, e.g., 'pcs'"></i>
                                 </label>
                                 <input type="text" class="form-control" id="edit-product-unit" placeholder="e.g., pcs" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-product-price" class="form-label">Price per Unit
+                                <label for="edit-product-price" class="form-label">Стоймость
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Price per unit, e.g., '5.00'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="edit-product-price" step="0.01" placeholder="e.g., 5.00" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-product-stock" class="form-label">Stock Quantity
+                                <label for="edit-product-stock" class="form-label">лимит
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Current stock quantity, e.g., '200'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="edit-product-stock" step="0.01" placeholder="e.g., 200" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edit-product-minimum-stock" class="form-label">Minimum Stock
+                                <label for="edit-product-minimum-stock" class="form-label">мин Количество
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Minimum stock level for alerts, e.g., '50'"></i>
                                 </label>
                                 <input type="number" class="form-control" id="edit-product-minimum-stock" step="0.01" placeholder="e.g., 50" required>
                             </div>
-                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="product">Show Example</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary mb-3 show-example-btn" data-form="product">показать пример</button>
+                            <button type="submit" class="btn btn-primary">сохранить изименения</button>
                         </form>
                     </div>
                 </div>
@@ -744,17 +744,17 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
                     <i class="fas fa-history me-2"></i>
-                    <h2 class="card-title mb-0">Audit Log</h2>
+                    <h2 class="card-title mb-0">Журнал обновлений</h2>
                 </div>
                 <div class="card-body">
                     <table id="auditlog-table" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Model</th>
-                                <th>Object ID</th>
-                                <th>Action</th>
-                                <th>Timestamp</th>
-                                <th>Details</th>
+                                <th>Модель</th>
+                                <th>Объект ID</th>
+                                <th>Действие</th>
+                                <th>Временная метка</th>
+                                <th>Подробности</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -768,38 +768,38 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
                     <i class="fas fa-chart-bar me-2"></i>
-                    <h2 class="card-title mb-0">Reports</h2>
+                    <h2 class="card-title mb-0">Отчёты</h2>
                 </div>
                 <div class="card-body">
                     <!-- Фильтр по датам -->
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <label for="report-start-date" class="form-label">Start Date</label>
+                            <label for="report-start-date" class="form-label">Дата начала</label>
                             <input type="date" class="form-control" id="report-start-date">
                         </div>
                         <div class="col-md-6">
-                            <label for="report-end-date" class="form-label">End Date</label>
+                            <label for="report-end-date" class="form-label">Дата окончания</label>
                             <input type="date" class="form-control" id="report-end-date">
                         </div>
                         <div class="col-12 mt-3">
-                            <button class="btn btn-primary" id="apply-date-filter">Apply Filter</button>
+                            <button class="btn btn-primary" id="apply-date-filter">Добавить Фильтр</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-4">
-                            <h3>Raw Material Usage</h3>
+                            <h3>Использовано сырья</h3>
                             <canvas id="rawMaterialChart"></canvas>
                         </div>
                         <div class="col-md-6 mb-4">
-                            <h3>Order Status Distribution</h3>
+                            <h3>Количество заказов</h3>
                             <canvas id="orderStatusChart"></canvas>
                         </div>
                         <div class="col-md-6 mb-4">
-                            <h3>Stock Movements Over Time</h3>
+                            <h3>динамика запасов </h3>
                             <canvas id="stockMovementChart"></canvas>
                         </div>
                         <div class="col-md-6 mb-4">
-                            <h3>Inventory Cost Breakdown</h3>
+                            <h3>Складские запасы</h3>
                             <canvas id="inventoryCostChart"></canvas>
                         </div>
                     </div>

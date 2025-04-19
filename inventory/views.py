@@ -68,8 +68,11 @@ class ReportView(APIView):
             end_date = timezone.now()
             start_date = end_date - timedelta(days=30)
         else:
-            start_date = timezone.datetime.strptime(start_date, '%Y-%m-%d')
-            end_date = timezone.datetime.strptime(end_date, '%Y-%m-%d')
+            try:
+                start_date = datetime.strptime(start_date, '%Y-%m-%d')
+                end_date = datetime.strptime(end_date, '%Y-%m-%d')
+            except ValueError:
+                return Response({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
 
         # Использование сырья
         raw_material_usage = RawMaterialUsage.objects.filter(
